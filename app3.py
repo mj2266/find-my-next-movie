@@ -1,5 +1,5 @@
 
-import gunicorn
+
 from flask import Flask, render_template, flash, redirect, url_for, session
 # from neo4jrestclient.client import GraphDatabase
 from neo4j import GraphDatabase, basic_auth
@@ -34,8 +34,7 @@ def login():
     if form.validate_on_submit():
         user = form.username.data
         passw = form.password.data
-        gdb1 =  GraphDatabase.driver(bolt_url, auth=basic_auth(usr_nm_db, pswrd_db))
-        gdb = gdb1.session()
+        gdb =  Graph(bolt_url, user= usr_nm_db, password = pswrd_db)
         query = '''MATCH(m:users)WHERE m.username='%s' RETURN m.password AS pass''' % (user)
         result = gdb.run(query,parameters={})
         result = result.value()
