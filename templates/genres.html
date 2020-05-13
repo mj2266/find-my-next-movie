@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" href="{{ url_for('static', filename = 'img/favicon.png') }}" type="image/png">
+	<title>Fashiop</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/bootstrap.css') }}">
+	<!-- main css -->
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/loginstyle.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/responsive.css') }}">
+</head>
+
+<body>
+	<!--================Login Box Area =================-->
+	<section class="login_box_area p_120">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login_box_img">
+						<img class="img-fluid" src="{{ url_for('static', filename = 'img/login.jpg') }}" alt="">
+						<div class="hover">
+							<h4>What is <i>Genre</i>?</h4>
+							<p>Genre is a style or category of art, music, or literature. This will help us to suggest better movies to you based on your preferences.</p>
+<!-- 							<a class="main_btn" href="registration.html">Create an Account</a>
+ -->						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="login_form_inner">
+						<h3>Select Genres</h3>
+<div class="gencontainer">
+  <ul class="ks-cboxtags">
+    <li><input type="checkbox" id="checkboxOne" value="Rainbow Dash">			<label for="checkboxOne">Rainbow Dash</label>		</li>
+    <li><input type="checkbox" id="checkboxTwo" value="Cotton Candy" >			<label for="checkboxTwo">Cotton Candy</label>		</li>
+    <li><input type="checkbox" id="checkboxThree" value="Rarity" >				<label for="checkboxThree">Rarity</label>			</li>
+    <li><input type="checkbox" id="checkboxFour" value="Moondancer">			<label for="checkboxFour">Moondancer</label>		</li>
+    <li><input type="checkbox" id="checkboxFive" value="Surprise">				<label for="checkboxFive">Surprise</label>			</li>
+    <li><input type="checkbox" id="checkboxSix" value="Twilight Sparkle" >		<label for="checkboxSix">Twilight Sparkle</label>	</li>
+    <li><input type="checkbox" id="checkboxSeven" value="Fluttershy">			<label for="checkboxSeven">Fluttershy</label>		</li>
+    <li><input type="checkbox" id="checkboxEight" value="Derpy Hooves">			<label for="checkboxEight">Derpy Hooves</label>		</li>
+    <li><input type="checkbox" id="checkboxNine" value="Princess Celestia">		<label for="checkboxNine">Princess Celestia</label>	</li>
+    <li><input type="checkbox" id="checkboxTen" value="Gusty">					<label for="checkboxTen">Gusty</label>				</li>
+    <li><input type="checkbox" id="checkboxEleven" value="Discord">				<label for="checkboxEleven">Discord</label>			</li>
+    <li><input type="checkbox" id="checkboxTwelve" value="Clover">				<label for="checkboxTwelve">Clover</label>			</li>
+    <li><input type="checkbox" id="checkboxThirteen" value="Baby Moondancer">	<label for="checkboxThirteen">Baby Moondancer</label></li>
+    <li><input type="checkbox" id="checkboxFourteen" value="Medley">			<label for="checkboxFourteen">Medley</label>		</li>
+    <li><input type="checkbox" id="checkboxFifteen" value="Firefly">			<label for="checkboxFifteen">Firefly</label>		</li>
+  </ul>
+
+</div>
+						<div class="col-md-12 form-group">
+							<a href="index.html"> <button type="submit" value="submit" class="btn submit_btn">Next</button></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="{{ url_for('static', filename = 'js/jquery-3.2.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'js/popper.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'js/bootstrap.min.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'js/stellar.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'vendors/lightbox/simpleLightbox.min.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'vendors/nice-select/js/jquery.nice-select.min.js') }}"></script>
+{#	<script src="{{ url_for('static', filename = 'img/favicon.png') }}vendors/isotope/imagesloaded.pkgd.min.js"></script>#}
+{#	<script src="{{ url_for('static', filename = 'img/favicon.png') }}vendors/isotope/isotope-min.js"></script>#}
+{#	<script src="{{ url_for('static', filename = 'img/favicon.png') }}vendors/owl-carousel/owl.carousel.min.js"></script>#}
+	<script src="{{ url_for('static', filename = 'js/jquery.ajaxchimp.min.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'js/mail-script.js') }}"></script>
+{#	<script src="{{ url_for('static', filename = 'img/favicon.png') }}vendors/jquery-ui/jquery-ui.js"></script>#}
+{#	<script src="{{ url_for('static', filename = 'img/favicon.png') }}vendors/counter-up/jquery.waypoints.min.js"></script>#}
+{#	<script src="{{ url_for('static', filename = 'img/favicon.png') }}vendors/counter-up/jquery.counterup.js"></script>#}
+	<script src="{{ url_for('static', filename = 'js/theme.js') }}"></script>
+</body>
+
+</html>

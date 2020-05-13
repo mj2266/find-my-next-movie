@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" href="img/favicon.png" type="image/png">
+	<title>Fashiop</title>
+	<!-- Bootstrap CSS -->
+{#	<link rel="stylesheet" href="css/bootstrap.css">#}
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/bootstrap.css') }}">
+	<!-- main css -->
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/loginstyle.css') }}">
+{#	<link rel="stylesheet" href="css/responsive.css">#}
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/responsive.css') }}">
+</head>
+
+<body>
+	<!--================Login Box Area =================-->
+	<section class="login_box_area p_120">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login_box_img">
+						<img class="img-fluid" src="{{ url_for('static',filename= 'img/login.jpg') }}" alt="">
+						<div class="hover">
+							<h4>New to our website?</h4>
+							<p>There are advances being made in science and technology everyday, and a good example of this is the</p>
+							<a class="main_btn" href="{{ url_for ("registration") }}">Create an Account</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="login_form_inner">
+						<h3>Log in to enter</h3>
+						<form class="row login_form" method="post" id="contactForm">
+                            {{ form.hidden_tag() }} {# csrf token#}
+
+							<div class="col-md-12 form-group">
+{#								<input type="text" class="form-control" id="name" name="name" placeholder="Username">#}
+                                {{ form.username (class='form-control', placeholder='Username') }}
+
+							</div>
+							<div class="col-md-12 form-group">
+{#								<input type="text" class="form-control" id="name" name="name" placeholder="Password">#}
+                                {{ form.password (class = 'form-control', placeholder='Password') }}
+							</div>
+							<div class="col-md-12 form-group">
+								<div class="creat_account">
+									<input type="checkbox" id="f-option2" name="selector">
+									<label for="f-option2">Keep me logged in</label>
+								</div>
+							</div>
+							<div class="col-md-12 form-group">
+{#								<button type="submit" value="submit" class="btn submit_btn">Log In</button>#}
+                                {{ form.submit (class ='btn submit_btn') }}
+								<a>Forgot Password?</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/popper.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/stellar.js"></script>
+	<script src="vendors/lightbox/simpleLightbox.min.js"></script>
+	<script src="vendors/nice-select/js/jquery.nice-select.min.js"></script>
+	<script src="vendors/isotope/imagesloaded.pkgd.min.js"></script>
+	<script src="vendors/isotope/isotope-min.js"></script>
+	<script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+	<script src="js/jquery.ajaxchimp.min.js"></script>
+	<script src="js/mail-script.js"></script>
+	<script src="vendors/jquery-ui/jquery-ui.js"></script>
+	<script src="vendors/counter-up/jquery.waypoints.min.js"></script>
+	<script src="vendors/counter-up/jquery.counterup.js"></script>
+	<script src="js/theme.js"></script>
+</body>
+
+</html>
