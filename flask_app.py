@@ -5,7 +5,7 @@ from flask import Flask, render_template, flash, redirect, url_for, session
 from neo4j import GraphDatabase, basic_auth
 import requests
 
-
+from py2neo import Graph
 import json
 
 from forms import Registration, Login, SearchBar
