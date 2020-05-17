@@ -73,6 +73,7 @@ def addViewed(imdb):
     return m.title
     '''  % (imdb ,user)
     results = gdb.run(query, data_contents=True)
+
     return redirect(url_for('index'))
 
 @app.route('/registration',methods =['GET','POST'])
@@ -146,13 +147,14 @@ def search(var):
            WHERE toLower(m.title) contains '%s'
          RETURN m.title,m.imdbId''' %var
     results = gdb.run(query)
+    results = results.values()
     return render_template('search.html',results=results)
 
 
-def imdbToMovieDetails(imdbID):
-    imdbID = imdbID[0]
-    print(imdbID)
-    movie_id = 'tt{}'.format(imdbID)  # this will generate the imdb Movie ID
+def imdbToMovieDetails(imdbId):
+    imdbId = imdbId[0]
+    print(imdbId)
+    movie_id = 'tt{}'.format(imdbId)  # this will generate the imdb Movie ID
     # -----------------------------------------------------------------------------
 
     # ----------- HERE I WILL CONNECT WITH API AND SEND REQUEST -------------------
@@ -213,6 +215,7 @@ def index():
     results = gdb.run(query, data_contents=True)
     # results = results.rows[0][0]
     data = []
+    results = results.values()
     for res in results:
         print(res)
         data.append(imdbToMovieDetails(res))
@@ -256,6 +259,7 @@ def index():
     '''
     highrate = []
     results = gdb.run(query, data_contents=True)
+    results = results.values()
     for res in results:
         highrate.append(imdbToMovieDetails(res))
 
