@@ -1,19 +1,13 @@
-
 import gunicorn
 from flask import Flask, render_template, flash, redirect, url_for, session
-# from neo4jrestclient.client import GraphDatabase
 from neo4j import GraphDatabase, basic_auth
 import requests
-
-from py2neo import Graph
-import json
 
 from forms import Registration, Login, SearchBar
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'panda'
-
 
 bolt_url = "bolt://hobby-gfahodcaabamgbkegkdpbbel.dbs.graphenedb.com:24787"
 usr_nm_db = 'developer'
@@ -23,30 +17,30 @@ pswrd_db = 'b.rEb0aDuWDSh6.MJh3xAHL51pltkfC'
 @app.route('/logout')
 def logout():
     if session.get('username'):
-    # prevent flashing automatically logged out message
+        # prevent flashing automatically logged out message
         del session['username']
     return redirect('/login')
 
 
-@app.route('/login', methods =['GET','POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = Login()
     if form.validate_on_submit():
         user = form.username.data
         passw = form.password.data
-        gdb1 =  GraphDatabase.driver(bolt_url, auth=basic_auth(usr_nm_db, pswrd_db))
+        gdb1 = GraphDatabase.driver(bolt_url, auth=basic_auth(usr_nm_db, pswrd_db))
         gdb = gdb1.session()
         query = '''MATCH(m:users)WHERE m.username='%s' RETURN m.password AS pass''' % (user)
-        result = gdb.run(query,parameters={})
+        result = gdb.run(query, parameters={})
         result = result.value()
         print(result)
         if result[0] == passw:
             print('Successfully logged in')
             session['username'] = user
-            query = '''MATCH((u:users)-[:VIEWED]->(m:Movie)) where u.username ="%s" RETURN m''' %(user)
+            query = '''MATCH((u:users)-[:VIEWED]->(m:Movie)) where u.username ="%s" RETURN m''' % (user)
             results = gdb.run(query)
             results = results.value()
-            print("haba",results)
+            print("haba", results)
             if len(results) == 0:
                 print("right")
                 return redirect(url_for('choose'))
@@ -57,7 +51,7 @@ def login():
         else:
             print('password does not match')
 
-    return render_template('login.html',form =form)
+    return render_template('login.html', form=form)
 
 
 @app.route('/dummy/<imdb>')
@@ -71,20 +65,22 @@ def addViewed(imdb):
     where m.imdbId = '%s' and u.username = '%s'
     CREATE (u)-[:VIEWED]->(m) 
     return m.title
-    '''  % (imdb ,user)
+    ''' % (imdb, user)
     results = gdb.run(query, data_contents=True)
 
     return redirect(url_for('index'))
 
-@app.route('/registration',methods =['GET','POST'])
+
+@app.route('/registration', methods=['GET', 'POST'])
 def registration():
     form = Registration()
     if form.validate_on_submit():
         flash('Account successfully created')
-        gdb1 =  GraphDatabase.driver(bolt_url, auth=basic_auth(usr_nm_db, pswrd_db))
+        gdb1 = GraphDatabase.driver(bolt_url, auth=basic_auth(usr_nm_db, pswrd_db))
         gdb = gdb1.session()
 
-        query='''CREATE(:users{username:'%s', email:'%s', password:'%s'})''' %(form.username.data ,form.email.data ,form.password.data)
+        query = '''CREATE(:users{username:'%s', email:'%s', password:'%s'})''' % (
+        form.username.data, form.email.data, form.password.data)
         gdb.run(query)
         if (form.Animation.data == True):
             query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Animation' CREATE (a)-[:likes]->(g)''' % (
@@ -126,10 +122,10 @@ def registration():
                 form.username.data)
             gdb.run(query)
         return redirect(url_for('login'))
-    return render_template('registration.html',form = form)
+    return render_template('registration.html', form=form)
 
 
-@app.route('/choose',methods =['GET','POST'])
+@app.route('/choose', methods=['GET', 'POST'])
 def choose():
     form = SearchBar()
     if form.validate_on_submit():
@@ -138,17 +134,16 @@ def choose():
     return render_template('choose.html', form=form)
 
 
-
 @app.route('/search/<var>')
 def search(var):
     gdb1 = GraphDatabase.driver(bolt_url, auth=basic_auth(usr_nm_db, pswrd_db))
     gdb = gdb1.session()
     query = '''MATCH (m:Movie)
            WHERE toLower(m.title) contains '%s'
-         RETURN m.title,m.imdbId''' %var
+         RETURN m.title,m.imdbId''' % var
     results = gdb.run(query)
     results = results.values()
-    return render_template('search.html',results=results)
+    return render_template('search.html', results=results)
 
 
 def imdbToMovieDetails(imdbId):
@@ -164,8 +159,6 @@ def imdbToMovieDetails(imdbId):
     response = requests.get(req_string)
 
     var = response.json()
-
-
 
     data = var.get('movie_results')
     if not data:
@@ -189,11 +182,11 @@ def imdbToMovieDetails(imdbId):
     return (data[0])
 
 
-@app.route('/index',methods=['GET','POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     username = session.get('username')
     print(username)
-    if not username :
+    if not username:
         return redirect(url_for('login'))
     gdb1 = GraphDatabase.driver(bolt_url, auth=basic_auth(usr_nm_db, pswrd_db))
     gdb = gdb1.session()
@@ -211,7 +204,7 @@ def index():
     ORDER by cnt  desc
     RETURN distinct imdbId
     limit 5
-    '''%username
+    ''' % username
     results = gdb.run(query, data_contents=True)
     # results = results.rows[0][0]
     data = []
@@ -221,10 +214,10 @@ def index():
         data.append(imdbToMovieDetails(res))
     # link = 'https://image.tmdb.org/t/p/original/{}'.format(poster)
     # link2 = 'https://image.tmdb.org/t/p/original/{}'.format(back)
-    #------------------------------------------------------------------
-    genrelist=[]
-    movielist=[]
-    query = '''match p=(n:users)-[r:likes]->(m:Genre) where n.username="%s" return m.name''' %username
+    # ------------------------------------------------------------------
+    genrelist = []
+    movielist = []
+    query = '''match p=(n:users)-[r:likes]->(m:Genre) where n.username="%s" return m.name''' % username
     results = gdb.run(query, data_contents=True)
     manjy_list = []
     results = results.value()
@@ -245,7 +238,7 @@ def index():
             RETURN m.imdbId
             ORDER BY m.imdbRating DESC
             LIMIT 5
-        ''' %result1
+        ''' % result1
         gresults = gdb.run(query2, data_contents=True)
 
         appender.append(result1)
@@ -263,17 +256,18 @@ def index():
     for res in results:
         highrate.append(imdbToMovieDetails(res))
 
-    return render_template('index.html', data=data,form=form,list= manjy_list,highrate=highrate)
+    return render_template('index.html', data=data, form=form, list=manjy_list, highrate=highrate)
+
 
 @app.route('/genres')
 def genres():
     return render_template('genres.html')
 
+
 @app.route('/product')
 def product():
     return render_template('product.html')
 
+
 if __name__ == '__main__':
     app.run()
-
-
