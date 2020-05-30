@@ -4,7 +4,6 @@ from neo4j import GraphDatabase, basic_auth
 import requests
 
 from forms import Registration, Login, SearchBar
-
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'panda'
@@ -12,6 +11,15 @@ app.config['SECRET_KEY'] = 'panda'
 bolt_url = "bolt://hobby-gfahodcaabamgbkegkdpbbel.dbs.graphenedb.com:24787"
 usr_nm_db = 'developer'
 pswrd_db = 'b.rEb0aDuWDSh6.MJh3xAHL51pltkfC'
+
+# bolt_url = "bolt://54.82.3.194:37481"
+# usr_nm_db = 'neo4j'
+# pswrd_db = 'addressees-attitude-game'
+
+# bolt_url = "bolt://107.22.147.78:33503"
+# usr_nm_db = 'neo4j'
+# pswrd_db = 'wiggles-dates-laps'
+
 
 
 @app.route('/logout')
@@ -61,7 +69,7 @@ def addViewed(imdb):
     gdb1 = GraphDatabase.driver(bolt_url, auth=basic_auth(usr_nm_db, pswrd_db))
     gdb = gdb1.session()
     query = '''
-    MATCH (m:Movie),(u:users) 
+    MATCH (m:Movie),(u:users)
     where m.imdbId = '%s' and u.username = '%s'
     CREATE (u)-[:VIEWED]->(m) 
     return m.title
@@ -78,49 +86,65 @@ def registration():
         flash('Account successfully created')
         gdb1 = GraphDatabase.driver(bolt_url, auth=basic_auth(usr_nm_db, pswrd_db))
         gdb = gdb1.session()
-
+        
         query = '''CREATE(:users{username:'%s', email:'%s', password:'%s'})''' % (
         form.username.data, form.email.data, form.password.data)
         gdb.run(query)
         if (form.Animation.data == True):
-            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Animation' CREATE (a)-[:likes]->(g)''' % (
+            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Animation' CREATE (a)-[:likes]->(g)
+            return g.name''' % (
                 form.username.data)
-            gdb.run(query)
-
+            result = gdb.run(query)
+            print(result.values())
         if (form.Adventure.data == True):
-            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Adventure' CREATE (a)-[:likes]->(g)''' % (
+            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Adventure' CREATE (a)-[:likes]->(g)
+            return g.name''' % (
                 form.username.data)
-            gdb.run(query)
+            result = gdb.run(query)
+            print(result.values())
 
         if (form.Comedy.data == True):
-            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Comedy' CREATE (a)-[:likes]->(g)''' % (
+            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Comedy' CREATE (a)-[:likes]->(g)
+            return g.name''' % (
                 form.username.data)
-            gdb.run(query)
+            result = gdb.run(query)
+            print(result.values())
 
         if (form.Children.data == True):
-            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Children' CREATE (a)-[:likes]->(g)''' % (
+            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Children' CREATE (a)-[:likes]->(g)
+            return g.name''' % (
                 form.username.data)
-            gdb.run(query)
+            result = gdb.run(query)
+            print(result.values())
 
         if (form.Action.data == True):
-            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Action' CREATE (a)-[:likes]->(g)''' % (
+            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Action' CREATE (a)-[:likes]->(g)
+            return g.name''' % (
                 form.username.data)
-            gdb.run(query)
+            result = gdb.run(query)
+            print(result.values())
 
         if (form.Crime.data == True):
-            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Crime' CREATE (a)-[:likes]->(g)''' % (
+            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Crime' CREATE (a)-[:likes]->(g)
+            return g.name''' % (
                 form.username.data)
-            gdb.run(query)
+            result = gdb.run(query)
+            print(result.values())
 
         if (form.Romance.data == True):
-            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Romance' CREATE (a)-[:likes]->(g)''' % (
+            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Romance' CREATE (a)-[:likes]->(g)
+            return g.name''' % (
                 form.username.data)
-            gdb.run(query)
+            result = gdb.run(query)
+            print(result.values())
 
         if (form.Drama.data == True):
-            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Drama' CREATE (a)-[:likes]->(g)''' % (
+            query = '''MATCH (a:users),(g:Genre) where a.username= '%s' AND g.name='Drama' CREATE (a)-[:likes]->(g)
+            return g.name''' % (
                 form.username.data)
-            gdb.run(query)
+            result = gdb.run(query)
+            print(result.values())
+        print(form.username.data)
         return redirect(url_for('login'))
     return render_template('registration.html', form=form)
 
@@ -149,7 +173,7 @@ def search(var):
 def imdbToMovieDetails(imdbId):
     imdbId = imdbId[0]
     print(imdbId)
-    movie_id = 'tt{}'.format(imdbId)  # this will generate the imdb Movie ID
+    movie_id = '{}'.format(imdbId)  # this will generate the imdb Movie ID
     # -----------------------------------------------------------------------------
 
     # ----------- HERE I WILL CONNECT WITH API AND SEND REQUEST -------------------
@@ -179,6 +203,7 @@ def imdbToMovieDetails(imdbId):
     # link = 'https://image.tmdb.org/t/p/original/{}'.format(poster)
     # link2 = 'https://image.tmdb.org/t/p/original/{}'.format(back)
     # ------------------------------------------------------------------
+    print("hey",data)
     return (data[0])
 
 
@@ -197,7 +222,7 @@ def index():
         return redirect(url_for('search', var=form.search.data))
 
     # ---------- THE FOLLOWING BLOCK WILL GENERATE IMDB MOVIE ID ------------------
-    query = '''MATCH (u:users {username: '%s'})-->(m:Movie)<--(other:User)
+    query = '''MATCH (u:users {username: '%s'})-->(m:Movie)<--(other:users)
     MATCH (other)-->(predict:Movie)
     WHERE not exists((u)-[:VIEWED]->(predict)) and exists(predict.imdbRating)
     with count(predict) as cnt , predict.imdbId as imdbId, predict.imdbRating as rating
